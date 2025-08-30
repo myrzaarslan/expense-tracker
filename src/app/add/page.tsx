@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
 import ExpenseForm from '../../components/expenseForm'
 import { z } from 'zod'
 import Link from 'next/link'
+import useLocalStorageState from 'use-local-storage-state'
 
 const formSchema = z.object({
   amount: z.number().positive('Amount must be greater than 0'),
@@ -26,7 +26,9 @@ type Expense = FormValues & {
 }
 
 export default function Add() {
-  const [expenses, setExpenses] = useState<Expense[]>([])
+  const [expenses, setExpenses] = useLocalStorageState<Expense[]>('expenses', {
+    defaultValue: [],
+  })
 
   const handleCreate = (exp: FormValues) => {
     const newExp: Expense = {
